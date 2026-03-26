@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import page1 from "../assets/page1.png";
 import page2 from "../assets/page2.png";
 import page3 from "../assets/page3.png";
@@ -6,16 +6,29 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const Carousel = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  // Update width on resize for responsive height
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Responsive height: 250px for mobile, 500px for desktop
+  const getHeight = () => (windowWidth < 768 ? "250px" : "500px");
+
   return (
     <section className="row mb-4">
-      <div className="col-lg-12">
-        {/* ✅ Bootstrap Carousel with auto-slide, loop, and indicators */}
+      <div className="col-12">
+
         <div
           id="mycarousel"
           className="carousel slide"
           data-bs-ride="carousel"
           data-bs-interval="3000"
         >
+
           {/* Indicators */}
           <div className="carousel-indicators">
             <button
@@ -40,16 +53,14 @@ const Carousel = () => {
             ></button>
           </div>
 
-          {/* Carousel items */}
+          {/* Carousel Items */}
           <div className="carousel-inner">
-            <div className="carousel-item ">
+            <div className="carousel-item active">
               <img
                 src={page1}
                 alt="slide1"
                 className="d-block w-100"
-                height="600"
-                width="100%"
-                style={{ objectFit: "cover" }}
+                style={{ height: getHeight(), objectFit: "cover" }}
               />
             </div>
             <div className="carousel-item">
@@ -57,19 +68,15 @@ const Carousel = () => {
                 src={page2}
                 alt="slide2"
                 className="d-block w-100"
-                height="600"
-                width="100%"
-                style={{ objectFit: "cover" }}
+                style={{ height: getHeight(), objectFit: "cover" }}
               />
             </div>
-            <div className="carousel-item active">
+            <div className="carousel-item">
               <img
                 src={page3}
                 alt="slide3"
                 className="d-block w-100"
-                height="600"
-                width="100%"
-                style={{ objectFit: "cover" }}
+                style={{ height: getHeight(), objectFit: "cover" }}
               />
             </div>
           </div>
@@ -87,6 +94,7 @@ const Carousel = () => {
             ></span>
             <span className="visually-hidden">Previous</span>
           </button>
+
           <button
             className="carousel-control-next"
             type="button"
@@ -101,7 +109,7 @@ const Carousel = () => {
           </button>
         </div>
 
-        {/* Optional Marquee Banner */}
+        {/* Promo Banner */}
         <marquee className="bg-info mt-3 py-2 text-dark fw-bold">
           ★ Limited Happy New Year 2026 Deal | Buy ksh 3,350 & Use Code YS.VUTI-75OFF for ksh 1,075 Discount
         </marquee>

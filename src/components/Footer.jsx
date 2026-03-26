@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+import { FaInstagram, FaTwitter, FaTiktok } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -21,18 +22,42 @@ const Footer = () => {
             <h5>Quick Links</h5>
             <ul className="list-unstyled">
               <li><a href="/" className="text-light text-decoration-none">Home</a></li>
-              <li><a href="/contact" className="text-light text-decoration-none">Contact</a></li>
               <li><Link to="/aboutus" className="text-light text-decoration-none">About Us</Link></li>
             </ul>
           </div>
 
           {/* Social Media */}
-          <div className="col-md-4 mb-4">z
+          <div className="col-md-4 mb-4">
             <h5>Follow Us</h5>
-            <div>
-              <a href="#" className="text-light me-3">Instagram</a>
-              <a href="#" className="text-light me-3">Twitter</a>
-              <a href="#" className="text-light">TikTok</a>
+            <div className="d-flex align-items-center gap-3">
+
+              <a 
+                href="https://instagram.com/ys.vuti" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-light fs-4"
+              >
+                <FaInstagram />
+              </a>
+
+              <a 
+                href="https://twitter.com/yourusername" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-light fs-4"
+              >
+                <FaTwitter />
+              </a>
+
+              <a 
+                href="https://tiktok.com/@ys.vuti" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-light fs-4"
+              >
+                <FaTiktok />
+              </a>
+
             </div>
           </div>
 
@@ -50,4 +75,4 @@ const Footer = () => {
   )
 }
 
-export default Footer
+export default Footer;

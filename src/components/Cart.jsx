@@ -3,7 +3,7 @@ import { useCart } from '../Addcart';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cart, removeFromCart, addToCart } = useCart(); // access cart functions
+  const { cart, removeFromCart } = useCart();
   const navigate = useNavigate();
 
   if (cart.length === 0) {
@@ -17,22 +17,20 @@ const Cart = () => {
     );
   }
 
-  const updateQuantity = (id, delta) => {
-    cart.forEach(item => {
-      if(item.id === id){
-        const newQty = Math.max(1, item.quantity + delta);
-        item.quantity = newQty;
-      }
-    });
-    // Force re-render by updating state
-    addToCart({}); // dummy call, consider using setCart in provider if needed
-  };
-
-  const totalCost = cart.reduce((acc, item) => acc + item.product_cost * item.quantity, 0);
+  const totalCost = cart.reduce(
+    (acc, item) => acc + item.product_cost * item.quantity,
+    0
+  );
 
   return (
     <div className="container py-5">
       <h3>Your Cart 🛒</h3>
+
+      {/* ✅ Alert message added */}
+      <div className="alert alert-info mt-3">
+        To increase or adjust item quantity, please proceed to checkout.
+      </div>
+
       <table className="table table-hover mt-4 align-middle">
         <thead>
           <tr>
@@ -43,6 +41,7 @@ const Cart = () => {
             <th scope="col">Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {cart.map(item => (
             <tr key={item.id}>
@@ -50,25 +49,23 @@ const Cart = () => {
                 <img
                   src={"https://kivuti.alwaysdata.net/static/images/" + item.product_photo}
                   alt={item.product_name}
-                  style={{ width: "60px", height: "60px", objectFit: "cover", marginRight: "10px" }}
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    objectFit: "cover",
+                    marginRight: "10px"
+                  }}
                 />
                 {item.product_name}
               </td>
+
               <td>Kes {item.product_cost}</td>
-              <td>
-                <div className="d-flex align-items-center">
-                  <button
-                    className="btn btn-sm btn-outline-secondary me-1"
-                    onClick={() => updateQuantity(item.id, -1)}
-                  >-</button>
-                  <span>{item.quantity}</span>
-                  <button
-                    className="btn btn-sm btn-outline-secondary ms-1"
-                    onClick={() => updateQuantity(item.id, 1)}
-                  >+</button>
-                </div>
-              </td>
+
+              {/* ✅ Quantity only */}
+              <td>{item.quantity}</td>
+
               <td>Kes {item.product_cost * item.quantity}</td>
+
               <td>
                 <button
                   className="btn btn-danger btn-sm"
@@ -81,7 +78,9 @@ const Cart = () => {
           ))}
         </tbody>
       </table>
+
       <h4 className="mt-3">Total: Kes {totalCost}</h4>
+
       <button
         className="btn btn-success mt-2"
         onClick={() => navigate('/makepayment', { state: { cart } })}
