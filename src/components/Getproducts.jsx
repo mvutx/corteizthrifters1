@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Getproducts = () => {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const { addToCart } = useCart();
@@ -21,13 +21,18 @@ const Getproducts = () => {
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
       const response = await axios.get("https://kivuti.alwaysdata.net/api/get_products");
-      setProducts(response.data);
-      setLoading(false);
+
+      setTimeout(() => {
+        setProducts(response.data);
+        setLoading(false);
+      }, 1500);
+
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      setTimeout(() => {
+        setLoading(false);
+        setError("Failed to load products. Check internet connection.");
+      }, 1000);
     }
   };
 
@@ -37,6 +42,7 @@ const Getproducts = () => {
 
   const handleAddToCart = (product) => {
     addToCart(product);
+
     toast.success(`${product.product_name} added to cart!`, {
       position: "top-right",
       autoClose: 2000,
@@ -49,63 +55,68 @@ const Getproducts = () => {
 
       <h3 className="text-primary mt-3 text-center">Available Clothes</h3>
 
-      {loading && <Loader />}
-      {error && <h4 className="text-danger text-center">{error}</h4>}
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <h4 className="text-danger text-center">{error}</h4>
+      ) : (
+        <>
+          <Carousel />
 
-      <Carousel />
+          <div className="row mt-4">
+            {products.map((product) => (
+              <div
+                className="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-4"
+                key={product.id}
+              >
+                <div className="card product-card h-100 border-0 shadow-sm">
 
-      <div className="row mt-3">
-        {products.map((product) => (
-          <div
-            className="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 mb-3"
-            key={product.id}
-          >
-            <div className="card shadow h-100 border-0">
+                  <div className="image-wrapper">
+                    <img
+                      src={img_url + product.product_photo}
+                      alt={product.product_name}
+                      className="card-img-top product-image"
+                    />
+                  </div>
 
-              <img
-                src={img_url + product.product_photo}
-                alt={product.product_name}
-                className="card-img-top"
-                style={{
-                  height: "160px",
-                  objectFit: "cover"
-                }}
-              />
+                  <div className="card-body d-flex flex-column p-3">
 
-              <div className="card-body d-flex flex-column p-2">
-                <h6 className="text-primary small fw-bold">
-                  {product.product_name}
-                </h6>
+                    <h6 className="product-title">
+                      {product.product_name}
+                    </h6>
 
-                <p className="text-muted small mb-1">
-                  {product.product_description?.slice(0, 35)}...
-                </p>
+                    <p className="product-description">
+                      {product.product_description?.slice(0, 40)}...
+                    </p>
 
-                <h6 className="text-warning fw-bold">
-                  Kes {product.product_cost}
-                </h6>
+                    <h6 className="product-price">
+                      Kes {product.product_cost}
+                    </h6>
 
-                <div className="mt-auto">
-                  <button
-                    className="btn btn-outline-info btn-sm w-100 mb-2"
-                    onClick={() => navigate("/makepayment", { state: { product } })}
-                  >
-                    Purchase
-                  </button>
+                    <div className="mt-auto">
+                      <button
+                        className="btn btn-outline-dark btn-sm w-100 mb-2"
+                        onClick={() => navigate("/makepayment", { state: { product } })}
+                      >
+                        Purchase
+                      </button>
 
-                  <button
-                    className="btn btn-success btn-sm w-100"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    Cart 🛒
-                  </button>
+                      <button
+                        className="btn btn-dark btn-sm w-100"
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        Cart 🛒
+                      </button>
+                    </div>
+
+                  </div>
+
                 </div>
               </div>
-
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </>
+      )}
 
       <Footer />
       <ToastContainer />

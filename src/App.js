@@ -43,7 +43,7 @@ function App() {
                 alt="MyShop Logo" 
                 style={{ height: '40px', marginRight: '10px' }} 
               />
-              MyShop
+              Home
             </Link>
 
             {/* Nav Links */}
