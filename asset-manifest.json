@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/sacredvanity/static/css/main.ce19c0a3.css",
+    "main.js": "/sacredvanity/static/js/main.dfa58c37.js",
+    "static/js/453.411b37b1.chunk.js": "/sacredvanity/static/js/453.411b37b1.chunk.js",
+    "static/media/page2.png": "/sacredvanity/static/media/page2.26d708e1b19a545c7a38.png",
+    "static/media/page3.png": "/sacredvanity/static/media/page3.01890a019bb6dbf3c72d.png",
+    "static/media/page1.png": "/sacredvanity/static/media/page1.2f22178ad75f884697f0.png",
+    "static/media/sacredlogo.png": "/sacredvanity/static/media/sacredlogo.0bcfcdba93332387f104.png",
+    "static/media/logo.png.jpg": "/sacredvanity/static/media/logo.png.66836e7f631fada47f6d.jpg",
+    "index.html": "/sacredvanity/index.html",
+    "main.ce19c0a3.css.map": "/sacredvanity/static/css/main.ce19c0a3.css.map",
+    "main.dfa58c37.js.map": "/sacredvanity/static/js/main.dfa58c37.js.map",
+    "453.411b37b1.chunk.js.map": "/sacredvanity/static/js/453.411b37b1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ce19c0a3.css",
+    "static/js/main.dfa58c37.js"
+  ]
+}
