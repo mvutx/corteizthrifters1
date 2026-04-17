@@ -10,7 +10,7 @@ const Footer = () => {
 
           {/* Brand Section */}
           <div className="col-md-4 mb-4">
-            <h4 className="fw-bold">Corteiz Thrifters</h4>
+            <h4 className="fw-bold">Sacred Vanity</h4>
             <p>
               Built for style, identity, and originality. 
               Wear confidence every day.
@@ -67,7 +67,7 @@ const Footer = () => {
 
         <div className="text-center">
           <p className="mb-0">
-            © 2026 Corteiz thrifters. All Rights Reserved.
+            © 2026 Sacred Vanity. All Rights Reserved.
           </p>
         </div>
       </div>

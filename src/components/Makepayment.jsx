@@ -1,17 +1,20 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Loader from './Loader';
-import Footer from './Footer';
+import axios from "axios";
+import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "./Loader";
+import Footer from "./Footer";
 
 const Makepayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Handle single product or cart
+  // GET PRODUCTS (single or cart)
   const initialProducts = location.state?.product
-    ? [{ ...location.state.product, quantity: 1 }] // single product
-    : location.state?.cart?.map(item => ({ ...item, quantity: 1 })) || []; // cart
+    ? [{ ...location.state.product, quantity: 1 }]
+    : location.state?.cart?.map(item => ({
+        ...item,
+        quantity: item.quantity || 1
+      })) || [];
 
   const [products, setProducts] = useState(initialProducts);
   const [number, setNumber] = useState("");
@@ -19,35 +22,59 @@ const Makepayment = () => {
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
+  const [promoCode, setPromoCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [promoMessage, setPromoMessage] = useState("");
+
   const img_url = "https://kivuti.alwaysdata.net/static/images/";
 
-  if (products.length === 0) {
-    return (
-      <div className='container py-5 text-center'>
-        <h3>Your cart is empty 🛒</h3>
-        <button className='btn btn-primary mt-3' onClick={() => navigate('/')}>
-          Back to Shop
-        </button>
-      </div>
-    );
-  }
-
-  // Function to increase or decrease quantity
+  // UPDATE QUANTITY
   const updateQuantity = (id, delta) => {
     setProducts(prev =>
-      prev.map(item => 
-        item.id === id 
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) } 
+      prev.map(item =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: Math.max(1, (item.quantity || 1) + delta)
+            }
           : item
       )
     );
   };
 
+  // TOTALS
   const totalCost = products.reduce(
-    (acc, item) => acc + item.product_cost * item.quantity,
+    (acc, item) => acc + item.product_cost * (item.quantity || 1),
     0
   );
 
+  const finalTotal = Math.max(0, totalCost - discount);
+
+  // APPLY PROMO
+  const applyPromo = async () => {
+    try {
+      setPromoMessage("Applying code...");
+
+      const res = await axios.post(
+        "http://localhost:5000/api/apply-code",
+        {
+          code: promoCode.trim().toUpperCase(),
+          total: totalCost
+        }
+      );
+
+      setDiscount(res.data.discount);
+      setPromoMessage("✅ " + res.data.message);
+    } catch (err) {
+      setDiscount(0);
+      setPromoMessage(
+        err.response?.data?.message ||
+          "❌ Invalid or failed promo code"
+      );
+    }
+  };
+
+  // PAYMENT
   const handlesubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -57,57 +84,73 @@ const Makepayment = () => {
     try {
       const formdata = new FormData();
       formdata.append("phone", number);
-      formdata.append("amount", totalCost);
+      formdata.append("amount", finalTotal);
 
       const response = await axios.post(
         "https://kivuti.alwaysdata.net/api/mpesa_payment",
         formdata
       );
 
-      setLoading(false);
-      setSuccess(response.data.message);
+      setSuccess(response.data.message || "Payment initiated successfully");
     } catch (err) {
-      setLoading(false);
-      setError(err.message);
+      setError(err.message || "Payment failed");
     }
+
+    setLoading(false);
   };
 
   return (
-    <div className='container py-4'>
-      <h1 className="text-success mb-4">Make Payment - Lipa na M-Pesa</h1>
+    <div className="container py-4">
+      <h1 className="text-success mb-4">
+        Make Payment - Lipa na M-Pesa
+      </h1>
 
       <button
-        className='btn btn-primary mb-3'
+        className="btn btn-primary mb-3"
         onClick={() => navigate("/")}
       >
         &larr; Back
       </button>
 
-      {/* ✅ Product list with quantity selector */}
-      <div className="card shadow p-3 mb-3">
+      {/* 🔥 ONE CLEAN CHECKOUT CARD */}
+      <div className="card shadow p-4">
+
+        {/* PRODUCTS */}
         {products.map((item) => (
-          <div className="d-flex align-items-center mb-2" key={item.id}>
+          <div
+            key={item.id}
+            className="d-flex align-items-center mb-3"
+          >
             <img
               src={img_url + item.product_photo}
-              alt={item.product_name}
-              style={{ height: "60px", width: "60px", objectFit: "cover", marginRight: "10px" }}
+              alt=""
+              style={{
+                height: 60,
+                width: 60,
+                objectFit: "cover",
+                marginRight: 10
+              }}
             />
+
             <div className="flex-grow-1">
               <strong>{item.product_name}</strong>
-              <div className="text-warning">
-                Kes {item.product_cost} × {item.quantity} = Kes {item.product_cost * item.quantity}
+              <div className="text-muted">
+                Kes {item.product_cost} × {item.quantity}
               </div>
             </div>
-            <div className="d-flex align-items-center">
+
+            <div>
               <button
-                className="btn btn-sm btn-outline-secondary me-1"
+                className="btn btn-sm btn-outline-dark"
                 onClick={() => updateQuantity(item.id, -1)}
               >
                 -
               </button>
-              <span>{item.quantity}</span>
+
+              <span className="mx-2">{item.quantity}</span>
+
               <button
-                className="btn btn-sm btn-outline-secondary ms-1"
+                className="btn btn-sm btn-outline-dark"
                 onClick={() => updateQuantity(item.id, 1)}
               >
                 +
@@ -117,30 +160,86 @@ const Makepayment = () => {
         ))}
 
         <hr />
+
+        {/* PROMO */}
+        <div className="d-flex gap-2 mb-2">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter promo code"
+            value={promoCode}
+            onChange={(e) => setPromoCode(e.target.value)}
+          />
+
+          <button
+            className="btn btn-dark"
+            onClick={applyPromo}
+          >
+            Apply
+          </button>
+        </div>
+
+        <small>{promoMessage}</small>
+
+        <hr />
+
+        {/* TOTALS */}
         <h5>Total: Kes {totalCost}</h5>
+        <h5>Discount: -Kes {discount}</h5>
+        <h4 className="text-success">
+          Final: Kes {finalTotal}
+        </h4>
+
+        <hr />
+
+        {/* PAYMENT SECTION */}
+        {success ? (
+          <div className="text-center py-4">
+            <div style={{ fontSize: "60px", color: "green" }}>
+              ✔
+            </div>
+
+            <h4 className="text-success mt-2">
+              Payment Successful
+            </h4>
+
+            <p>{success}</p>
+
+            <button
+              className="btn btn-dark mt-3"
+              onClick={() => navigate("/")}
+            >
+              Continue Shopping
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handlesubmit}>
+            {loading && <Loader />}
+
+            {error && (
+              <p className="text-danger">{error}</p>
+            )}
+
+            <input
+              type="tel"
+              className="form-control mb-3"
+              placeholder="254XXXXXXXXX"
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              required
+            />
+
+            <button
+              className="btn btn-dark w-100"
+              disabled={loading}
+            >
+              {loading
+                ? "Processing..."
+                : `Pay Kes ${finalTotal}`}
+            </button>
+          </form>
+        )}
       </div>
-
-      {/* ✅ Payment form */}
-      <form onSubmit={handlesubmit} className="card shadow p-3">
-        {loading && <Loader />}
-        <h3 className="text-success">{success}</h3>
-        <h4 className="text-danger">{error}</h4>
-
-        <input
-          type="number"
-          className='form-control mb-3'
-          placeholder='Enter Phone number 254XXXXXXX'
-          required
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-        />
-
-        <input
-          type="submit"
-          value="Make Payment"
-          className='btn btn-success w-100'
-        />
-      </form>
 
       <Footer />
     </div>

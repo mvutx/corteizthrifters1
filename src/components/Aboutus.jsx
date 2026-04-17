@@ -3,105 +3,129 @@ import Footer from "./Footer";
 
 const Aboutus = () => {
   return (
-    <div style={{ backgroundColor: "beige" }} className="container-fluid px-2 py-4">
+    <div
+      style={{
+        backgroundColor: "#0a0a0a",
+        color: "white",
+        minHeight: "100vh"
+      }}
+      className="container-fluid px-3 py-5"
+    >
 
-      {/* Heading */}
-      <h1 className="bg-dark text-warning p-3">
-        The Rise of Corteiz Fashion in the UK Fashion Scene
-      </h1>
+      {/* 🔥 HERO */}
+      <div className="text-center mb-5">
+        <h1 style={{ fontSize: "3rem", letterSpacing: "3px" }}>
+          SACRED VANITY
+        </h1>
 
-      <h3 className="text-decoration-underline mt-4">Introduction to Corteiz</h3>
-      <p className="bg-light text-muted p-3">
-        In the ever-changing fashion industry, fresh companies often emerge and disappear.
-        However, some establish a niche that attracts consumers. Corteiz is a popular brand
-        that has become a major player in the UK fashion world through distinctive offerings.
-      </p>
+        <h4 style={{ color: "#00ffcc", marginTop: "10px" }}>
+          STAY SANE
+        </h4>
 
-      <h3 className="text-decoration-underline mt-4">What is the Origin of Corteiz</h3>
-      <p className="bg-light text-muted p-3">
-        Corteiz was born as a creative fashion brand in the bustling street life of the UK.
-        It quickly gained recognition among fashion-conscious youth who wanted unique clothing.
-      </p>
+        <p
+          className="mt-3"
+          style={{ maxWidth: "600px", margin: "auto", color: "#aaa" }}
+        >
+          In a world full of noise, pressure, and distraction —
+          Sacred Vanity is your reminder to stay grounded.
+        </p>
+      </div>
 
-      {/* Section One */}
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <img
-            src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f"
-            alt="fashion"
-            className="img-fluid"
-          />
-        </div>
+      {/* 🧠 MEANING */}
+      <div className="text-center mb-5">
+        <h3 style={{ borderBottom: "2px solid #00ffcc", display: "inline-block" }}>
+          What It Means
+        </h3>
 
-        <div className="col-md-6">
-          <h3 className="text-decoration-underline">Where to Buy Corteiz Clothes</h3>
-          <p className="bg-light text-muted p-3">
-            Locating Corteiz clothes is simple because the brand is present online
-            and in physical stores.
-          </p>
+        <p className="mt-4" style={{ color: "#ccc", maxWidth: "700px", margin: "auto" }}>
+          Sacred Vanity is not just clothing — it’s a mindset.
+        </p>
 
-          <h3 className="text-decoration-underline">Online Stores</h3>
-          <p className="bg-light text-muted p-3">
-            Official stores provide collections, size guides and exclusive offers.
-          </p>
+        <p style={{ color: "#aaa", maxWidth: "700px", margin: "auto" }}>
+          It represents protecting your mind in a chaotic world.
+          Staying grounded, focused, and true to yourself while everything around
+          you tries to distract, pressure, or break you.
+        </p>
+
+        <p style={{ color: "#aaa", maxWidth: "700px", margin: "auto" }}>
+          It’s about choosing clarity over chaos. Discipline over noise.
+          Identity over influence.
+        </p>
+      </div>
+
+      {/* 💻 DIGITAL SECTION */}
+      <div className="text-center mb-5">
+        <h3 style={{ borderBottom: "2px solid #ff00ff", display: "inline-block" }}>
+          Digital Identity
+        </h3>
+
+        <p className="mt-4" style={{ color: "#aaa", maxWidth: "700px", margin: "auto" }}>
+          Sacred Vanity exists at the intersection of fashion and digital culture.
+        </p>
+
+        <p style={{ color: "#aaa", maxWidth: "700px", margin: "auto" }}>
+          In a world driven by screens, algorithms, and endless scrolling —
+          we create pieces that remind you to stay real.
+        </p>
+
+        <p style={{ color: "#aaa", maxWidth: "700px", margin: "auto" }}>
+          This is more than style. It’s a signal.
+        </p>
+      </div>
+
+      {/* 🔥 CORE VALUES */}
+      <div className="text-center mb-5">
+        <h3 style={{ borderBottom: "2px solid #00ffcc", display: "inline-block" }}>
+          Core Philosophy
+        </h3>
+
+        <div className="row mt-4">
+          <div className="col-md-4">
+            <h5 style={{ color: "#00ffcc" }}>Stay Grounded</h5>
+            <p style={{ color: "#aaa" }}>
+              No matter the chaos around you, remain centered.
+            </p>
+          </div>
+
+          <div className="col-md-4">
+            <h5 style={{ color: "#00ffcc" }}>Stay Focused</h5>
+            <p style={{ color: "#aaa" }}>
+              Discipline over distraction. Always.
+            </p>
+          </div>
+
+          <div className="col-md-4">
+            <h5 style={{ color: "#00ffcc" }}>Stay True</h5>
+            <p style={{ color: "#aaa" }}>
+              Never lose yourself trying to fit into the world.
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Section Two */}
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <h3 className="text-decoration-underline">Conclusion</h3>
-          <p className="bg-light text-muted p-3">
-            Corteiz has rapidly become iconic in UK fashion because of bold design,
-            premium materials and strong streetwear identity.
-          </p>
-
-          <ol>
-            <li>
-              <strong>What is Corteiz?</strong>
-              <p className="bg-light text-muted p-2">
-                A UK streetwear brand known for bold modern fashion.
-              </p>
-            </li>
-
-            <li>
-              <strong>What types of clothing do you offer?</strong>
-              <p className="bg-light text-muted p-2">
-                Hoodies, cargos, jackets, shorts, tracksuits and more.
-              </p>
-            </li>
-
-            <li>
-              <strong>Exclusive collections?</strong>
-              <p className="bg-light text-muted p-2">
-                Yes, limited drops and special offers.
-              </p>
-            </li>
-
-            <li>
-              <strong>Where can I buy products?</strong>
-              <p className="bg-light text-muted p-2">
-                Online and selected stores.
-              </p>
-            </li>
-          </ol>
-        </div>
-
-        <div className="col-md-6">
-          <img
-            src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab"
-            alt="clothing"
-            className="img-fluid"
-          />
-        </div>
+      {/* ⚡ STATEMENT */}
+      <div
+        className="text-center p-4"
+        style={{
+          borderTop: "1px solid #333",
+          borderBottom: "1px solid #333"
+        }}
+      >
+        <h2 style={{ color: "#00ffcc", letterSpacing: "1px" }}>
+          STAY SANE IN A WORLD DESIGNED TO DISTRACT YOU
+        </h2>
       </div>
 
-      {/* Bottom moving text */}
-      
-    <Footer/>
+      {/* 👕 FINAL NOTE */}
+      <div className="text-center mt-5">
+        <p style={{ color: "#aaa", maxWidth: "600px", margin: "auto" }}>
+          Sacred Vanity is not just what you wear — it’s what you stand for.
+        </p>
+      </div>
+
+      <Footer />
     </div>
   );
-  
 };
 
 export default Aboutus;
